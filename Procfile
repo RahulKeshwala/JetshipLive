@@ -1,0 +1,1 @@
+web: gunicorn gotilo.wsgi --log-file -

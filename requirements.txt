@@ -1,0 +1,6 @@
+Django
+django-storages[s3]
+python-decouple
+Pillow
+django-import-export
+djangorestframework

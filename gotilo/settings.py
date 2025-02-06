@@ -161,10 +161,10 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 # Fetch Cloudflare R2 credentials with default values
-CLOUDFLARE_R2_BUCKET = os.getenv("CLOUDFLARE_R2_BUCKET", "")
-CLOUDFLARE_R2_BUCKET_ENDPOINT = os.getenv("CLOUDFLARE_R2_BUCKET_ENDPOINT", "")
-CLOUDFLARE_R2_ACCESS_KEY = os.getenv("CLOUDFLARE_R2_ACCESS_KEY", "")
-CLOUDFLARE_R2_SECRET_KEY = os.getenv("CLOUDFLARE_R2_SECRET_KEY", "")
+CLOUDFLARE_R2_BUCKET = config("CLOUDFLARE_R2_BUCKET", "")
+CLOUDFLARE_R2_BUCKET_ENDPOINT = config("CLOUDFLARE_R2_BUCKET_ENDPOINT", "")
+CLOUDFLARE_R2_ACCESS_KEY = config("CLOUDFLARE_R2_ACCESS_KEY", "")
+CLOUDFLARE_R2_SECRET_KEY = config("CLOUDFLARE_R2_SECRET_KEY", "")
 
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
@@ -178,7 +178,7 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 
 STORAGES = {
         "default": {
-            "BACKEND": "helpers.cloudflare.storage.MediaFileStorage",
+            "BACKEND": "helpers.cloudflare.storage.mediaFileStorage",
             "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
         },
         "staticfiles": {

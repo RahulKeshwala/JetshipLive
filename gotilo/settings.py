@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -119,13 +120,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT= 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Add this if not already present
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+CLOUDFLARE_R2_BUCKET=config("CLOUDFLARE_R2_BUCKET")
+CLOUDFLARE_R2_BUCKET_ENDPOINT=config("CLOUDFLARE_R2_BUCKET_ENDPOINT")
+CLOUDFLARE_R2_ACCESS_KEY=config("CLOUDFLARE_R2_ACCESS_KEY")
+CLOUDFLARE_R2_SECRET_KEY=config("CLOUDFLARE_R2_SECRET_KEY")
 
-# Default primary key field types
-CLOUDFLARE_R2_BUCKET = os.environ.get("CLOUDFLARE_R2_BUCKET", default="")
-CLOUDFLARE_R2_BUCKET_ENDPOINT = os.environ.get("CLOUDFLARE_R2_BUCKET_ENDPOINT", default="")
-CLOUDFLARE_R2_ACCESS_KEY =  os.environ.get("CLOUDFLARE_R2_ACCESS_KEY", default="")
-CLOUDFLARE_R2_SECRET_KEY =  os.environ.get("CLOUDFLARE_R2_SECRET_KEY", default="")
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
     "bucket_name" : CLOUDFLARE_R2_BUCKET,
@@ -137,16 +142,15 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 }
 
 STORAGES = {
-    "default": {
-        "BACKEND": "helpers.cloudflare.storage.mediaFileStorage",
-        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
-    },
-    "staticfiles": {
-        "BACKEND": "helpers.cloudflare.storage.staticFileStorage",
-        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
-    },
-}
-
+        "default": {
+            "BACKEND": "helpers.cloudflare.storage.MediaFileStorage",
+            "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+            # Use local storage for static files even in production
+        },
+    }
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -174,4 +178,3 @@ REST_FRAMEWORK = {
 }
 
 
-APPEND_SLASH=False

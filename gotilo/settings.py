@@ -27,9 +27,9 @@ SECRET_KEY = 'django-insecure-or!*g**fs@uky=kjb_egk*m^kxn)44d@#n$mysk@$mfcdq#^#7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*",".vercel.app","10.0.2.2","127.0.0.1","localhost",".now.sh"]
+ALLOWED_HOSTS = ["*",'https://web-production-a183.up.railway.app',".vercel.app","10.0.2.2","127.0.0.1","localhost",".now.sh"]
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://localhost:3001",
@@ -40,6 +40,24 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
     "http://localhost:5173",
     
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-a183.up.railway.app',
+    # Add any other domains you need
+]
+
+# Also make sure your ALLOWED_HOSTS includes your domain
+ALLOWED_HOSTS = [
+    'web-production-a183.up.railway.app',
+    'localhost',
+    '127.0.0.1',
+    # Add any other domains you need
+]
+
+# If you're using CORS headers, you might also want to configure:
+CORS_ALLOWED_ORIGINS = [
+    'https://web-production-a183.up.railway.app',
+    # Add any other domains you need
 ]
 
 # Application definition

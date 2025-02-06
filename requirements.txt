@@ -5,3 +5,4 @@ Pillow
 django-import-export
 djangorestframework
 gunicorn==22.0.0
+python-dotenv

@@ -62,21 +62,21 @@ def posts(request):
         image_urls = {}
         for index, image in enumerate(images):
             original_filename = image.name
-            # print(original_filename)
+            print(original_filename)
             sanitized_filename = slugify(original_filename)  # Sanitize the filename
             unique_filename = f"uploads/2025/{uuid.uuid4()}_{sanitized_filename}.png"  # No leading slash
-            # print(unique_filename)
+            print(unique_filename)
 
             # Save image to Cloudflare R2 (using default storage system configured for Cloudflare)
             file_path = default_storage.save(unique_filename, image)
-            # print("file path: " + file_path)
+            print("file path: " + file_path)
 
             # Generate full Cloudflare image URL
             full_image_url = f"{CLOUDFLARE_BASE_URL}{file_path}"
-            # print(full_image_url)
+            print(full_image_url)
             image_urls[f"image{index + 1}"] = full_image_url
         
-        # print(image_urls)
+        print(image_urls)
         # 4 Final Post Creation
         post = Post.objects.create(
             user=user,

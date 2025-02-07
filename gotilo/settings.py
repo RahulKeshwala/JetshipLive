@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 import os
+from decouple import config
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,6 +29,7 @@ SECRET_KEY = 'django-insecure-or!*g**fs@uky=kjb_egk*m^kxn)44d@#n$mysk@$mfcdq#^#7
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 
 ALLOWED_HOSTS = ["*",'https://web-production-a183.up.railway.app',".vercel.app","10.0.2.2","127.0.0.1","localhost",".now.sh"]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -85,6 +86,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'gotilo.urls'
@@ -143,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -153,18 +155,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'staticfiles'),
+]
 # Add this if not already present
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
-# Fetch Cloudflare R2 credentials with default values
-CLOUDFLARE_R2_BUCKET = config("CLOUDFLARE_R2_BUCKET", "")
-CLOUDFLARE_R2_BUCKET_ENDPOINT = config("CLOUDFLARE_R2_BUCKET_ENDPOINT", "")
-CLOUDFLARE_R2_ACCESS_KEY = config("CLOUDFLARE_R2_ACCESS_KEY", "")
-CLOUDFLARE_R2_SECRET_KEY = config("CLOUDFLARE_R2_SECRET_KEY", "")
+
+# Default primary key field types
+
+CLOUDFLARE_R2_BUCKET=config("CLOUDFLARE_R2_BUCKET",default=None)
+CLOUDFLARE_R2_BUCKET_ENDPOINT=config("CLOUDFLARE_R2_BUCKET_ENDPOINT",default=None)
+CLOUDFLARE_R2_ACCESS_KEY=config("CLOUDFLARE_R2_ACCESS_KEY",default=None)
+CLOUDFLARE_R2_SECRET_KEY=config("CLOUDFLARE_R2_SECRET_KEY",default=None)
+
+if not CLOUDFLARE_R2_BUCKET or not CLOUDFLARE_R2_BUCKET_ENDPOINT:
+    raise ValueError("Cloudflare R2 Bucket or Endpoint is missing!")
 
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
@@ -186,6 +197,7 @@ STORAGES = {
             # Use local storage for static files even in production
         },
     }
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -213,3 +225,4 @@ REST_FRAMEWORK = {
 }
 
 
+# APPEND_SLASH=False
